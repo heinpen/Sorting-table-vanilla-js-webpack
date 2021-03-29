@@ -1,3 +1,3 @@
-# Sort-table(with sort search-by-name feature)
+# Sort-table(with search-by-name feature)
 
 
