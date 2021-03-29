@@ -1,3 +1,3 @@
-# biathlon-table(with sort feature)
+# sort-tale(with sort search-by-name feature)
 
 
