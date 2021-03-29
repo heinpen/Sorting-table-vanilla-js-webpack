@@ -1,3 +1,3 @@
-# biathlon-table
+# biathlon-table(with sort feature)
 
-## with sort feature
+
