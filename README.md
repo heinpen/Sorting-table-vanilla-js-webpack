@@ -4,8 +4,8 @@ Just simple table, adaptive.
 
 # Features
 
-- sort on click;
-- search by name;
+- sort on click
+- search by name
 
 # Usage
 
@@ -18,4 +18,4 @@ Just simple table, adaptive.
 
 2. Don't forget to use sctipt and styles files, there are comments, which i think you can handle =) 
 
-#End
+# End
