@@ -1,6 +1,6 @@
 # Introduction
 
-Just simple table, adaptive.
+Just simple, adaptive table.
 
 # Features
 
