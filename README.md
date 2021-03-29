@@ -1,3 +1,3 @@
-# sort-tale(with sort search-by-name feature)
+# Sort-table(with sort search-by-name feature)
 
 
