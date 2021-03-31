@@ -51,10 +51,9 @@ function createTable() {
     // find table container
     const tableContainer = document.querySelector('#sort-table-container');
 
-    // create element table and append it inside container
+    // create element table
     var table = document.createElement('table');
     table.classList.add('sort-table');
-    tableContainer.append(table);
 
     // create element table-head and append it inside table
     var tableHead = document.createElement('thead');
@@ -93,6 +92,9 @@ function createTable() {
     var tableBody = document.createElement('tbody');
     tableBody.classList.add('sort-table__body');
     table.append(tableBody);
+
+    // and append table to DOM
+    tableContainer.append(table);
 }
 
 function sort(sortBy, data, dir) {
@@ -149,14 +151,23 @@ function recreateNodes(sortBy, data, dir) {
 
 // based on new sorted data create cells of table
 function createNodes(newData) {
+    var mainFragment = document.createDocumentFragment(),
+        cellFragment = document.createDocumentFragment();
+
     for (let person of newData) {
-        let row = createRow();
-        document.querySelector('.sort-table__body').appendChild(row);
+        const row = createRow();
+
         for (const info in person) {
             const cell = createCell(info, person[info]);
-            row.appendChild(cell);
+            cellFragment.append(cell);
         }
+
+        row.append(cellFragment);
+        mainFragment.append(row);
+        console.log(row);
     }
+
+    document.querySelector('.sort-table__body').append(mainFragment);
 }
 
 function createRow() {
