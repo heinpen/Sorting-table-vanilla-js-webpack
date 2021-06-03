@@ -16,6 +16,6 @@ Just simple, adaptive table.
 <div id="sort-table-container"></div>
 ```
 
-2. Don't forget to use sctipt and styles files, there are comments, which i think you can handle =) 
+2. Include script.js and styles.css files in your project in wich you can find helpful comments.
 
 # End
