@@ -21,4 +21,5 @@ Just simple, adaptive table.
 
 2. Include script.js and styles.css files in your project in wich you can find helpful comments.
 
-## End
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
