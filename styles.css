@@ -50,12 +50,8 @@ td {
 .sort-table__title-cell {
   text-align: center;
   text-transform: capitalize;
-
-  padding: 10px;
-}
-
-.sort-table__title-cell span {
   cursor: pointer;
+  padding: 10px;
 }
 
 .sort-table__cell {
