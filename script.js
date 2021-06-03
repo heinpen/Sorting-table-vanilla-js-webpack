@@ -1,50 +1,37 @@
 'use strict';
-const data = [
-  {
-    place: '1',
-    name: 'William Atkinson',
-    'firing-rate': '98',
-    score: '90',
-  },
-  {
-    place: '4',
-    name: 'James Bailey',
-    'firing-rate': '67',
-    score: '100',
-  },
-  {
-    place: '3',
-    name: 'Harper Baker',
-    'firing-rate': '42',
-    score: '73',
-  },
-  {
-    place: '2',
-    name: 'Mason Ball',
-    'firing-rate': '31',
-    score: '203',
-  },
-  {
-    place: '5',
-    name: 'Jackson Anderson',
-    'firing-rate': '48',
-    score: '50',
-  },
-  {
-    place: '6',
-    name: 'Devon Allen',
-    'firing-rate': '58',
-    score: '30',
-  },
-];
 
-(function renderTable(data) {
-  // set default sort dirrection and by what we sort(sortBy)
-  let sortDir = 'up',
-    sortBy = 'place';
-  createTable();
-  createNodes(sort(sortBy, data, sortDir));
-})(data);
+// connect to firebase database
+const firebaseConfig = {
+  apiKey: 'AIzaSyBVeT3JuMqOgvP8joNaKclC5ykbt1ybL0E',
+  authDomain: 'sorting-table-fd4a3.firebaseapp.com',
+  databaseURL: 'https://sorting-table-fd4a3-default-rtdb.firebaseio.com',
+  projectId: 'sorting-table-fd4a3',
+  storageBucket: 'sorting-table-fd4a3.appspot.com',
+  messagingSenderId: '368922558232',
+  appId: '1:368922558232:web:1b28fb6537a1fb4e9e686d',
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+function databaseInit() {
+  return firebase.database().ref('/').once('value');
+}
+
+const properDataOrder = ['place', 'name', 'firingRate', 'score'],
+  properHeaderTitleOrder = ['Place', 'Name', 'Firing Rate', 'Score'];
+let data;
+databaseInit()
+  .then((answer) => {
+    data = answer.val();
+  })
+  .then(function renderTable() {
+    // set default sort dirrection and by what we sort(sortBy)
+    let sortDir = 'up',
+      sortBy = 'place';
+    createTable();
+    createNodes(sort(sortBy, data, sortDir));
+    addListeners();
+  });
 
 // create table
 function createTable() {
@@ -66,24 +53,15 @@ function createTable() {
   tableHead.append(tableHeader);
 
   // create loop to iterate over object properties to identify names of cells
-  for (let name in data[0]) {
+
+  properDataOrder.forEach((name, i) => {
     //  create header-cell and append it inside table-header
-    let headerCell = document.createElement('td');
+    const headerCell = document.createElement('th');
     headerCell.classList.add('sort-table__title-cell', `sort-table__${name}-title`);
+    headerCell.id = `${name}`;
+    headerCell.innerHTML = `${properHeaderTitleOrder[i]}`;
     tableHeader.append(headerCell);
-
-    //  create cell 'name' and append it inside header-cell
-    let headerCellName = document.createElement('span');
-    headerCellName.id = `${name}`;
-
-    // check if string has unappropriated char for name
-    if (name.indexOf('-') !== -1) {
-      // if yes change it with one space
-      name = name.replace('-', ' ');
-    }
-    headerCellName.innerHTML = `${name}`;
-    headerCell.append(headerCellName);
-  }
+  });
 
   // create table body and append it inside table
   const tableBody = document.createElement('tbody');
@@ -152,14 +130,13 @@ function createNodes(newData) {
   for (let person of newData) {
     const row = createRow();
 
-    for (const info in person) {
-      const cell = createCell(info, person[info]);
+    properDataOrder.forEach((value) => {
+      const cell = createCell(value, person[value]);
       cellFragment.append(cell);
-    }
+    });
 
     row.append(cellFragment);
     mainFragment.append(row);
-    console.log(row);
   }
 
   document.querySelector('.sort-table__body').append(mainFragment);
@@ -171,57 +148,55 @@ function createRow() {
   return row;
 }
 
-function createCell(key, value) {
+function createCell(key, prop) {
   const cell = document.createElement('td');
   // create class for cell using name of key
   cell.classList.add(`sort-table__${key}`);
   cell.classList.add('sort-table__cell');
-  cell.innerHTML = `${value}`;
+  cell.innerHTML = `${prop}`;
   return cell;
 }
 
-const tableHeader = document.querySelector('.sort-table__header');
+function addListeners() {
+  const tableHeader = document.querySelector('.sort-table__header'),
+    input = document.querySelector('#my-input');
+  // set event listener to head of table
+  tableHeader.addEventListener('click', function eventListener(e) {
+    if (e.target.id) {
+      // create variable in wich store value from dataset attribute
+      const atrSorted = document.querySelector(`.sort-table__${e.target.id}-title`).dataset.sorted;
+      let dirrection;
 
-// set event listener to head of table
-tableHeader.addEventListener('click', function eventListener(e) {
-  if (e.target.id) {
-    // create variable in wich store value from dataset attribute
-    const atrSorted = document.querySelector(`.sort-table__${e.target.id}-title`).dataset.sorted,
-    dirrection;
-
-    // change dirrection to the opposite of atrSorted(toggle dirrection)
-    // and call recreateNodes function with parameters due to where user click
-    if (atrSorted) {
-      if (atrSorted === 'upSorted') {
-         dirrection = 'down';
-        recreateNodes(e.target.id, data, dirrection);
+      // change dirrection to the opposite of atrSorted(toggle dirrection)
+      // and call recreateNodes function with parameters due to where user click
+      if (atrSorted) {
+        if (atrSorted === 'upSorted') {
+          dirrection = 'down';
+          recreateNodes(e.target.id, data, dirrection);
+        } else {
+          dirrection = 'up';
+          recreateNodes(e.target.id, data, dirrection);
+        }
       } else {
-         dirrection = 'up';
+        dirrection = 'up';
         recreateNodes(e.target.id, data, dirrection);
       }
-    } else {
-       dirrection = 'up';
-      recreateNodes(e.target.id, data, dirrection);
     }
-  }
-});
+  });
 
-// search by name
-const input = document.querySelector('#my-input');
+  // set event listener to input to triger function each time user enters something in field
+  input.addEventListener('keyup', function searchByName() {
+    // transform what user enters to upper case
+    const listOfNames = document.querySelectorAll('.sort-table__name'),
+      char = input.value.toUpperCase();
 
-// set event listener to input to triger function each time user enters something in field
-input.addEventListener('keyup', function searchByName() {
-  // transform what user enters to upper case
-  const listOfNames = document.querySelectorAll('.sort-table__name'),
-    char = input.value.toUpperCase();
-
-  for (let i = 0; i < listOfNames.length; i++) {
-    // and check if characters match by transform to upper case as well
-    if (listOfNames[i].innerHTML.toUpperCase().indexOf(char) !== 0) {
-      listOfNames[i].parentElement.style.display = 'none';
-    } else {
-      listOfNames[i].parentElement.style.display = 'table-row';
+    for (let i = 0; i < listOfNames.length; i++) {
+      // and check if characters match by transform to upper case as well
+      if (listOfNames[i].innerHTML.toUpperCase().indexOf(char) !== 0) {
+        listOfNames[i].parentElement.style.display = 'none';
+      } else {
+        listOfNames[i].parentElement.style.display = 'table-row';
+      }
     }
-  }
-});
-
+  });
+}
