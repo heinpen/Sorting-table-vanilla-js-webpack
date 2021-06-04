@@ -1,13 +1,16 @@
-# Introduction
+# Sorting table(Vanilla.js)
 
-Just simple, adaptive table.
+## Introduction
 
-# Features
+Just simple, adaptive table.  
+[Firebase](https://firebase.google.com) was used as database.
+
+## Features
 
 - sort on click
 - search by name
 
-# Usage
+## Usage
 
 1. Insert this HTML code in yours.
 
@@ -16,6 +19,7 @@ Just simple, adaptive table.
 <div id="sort-table-container"></div>
 ```
 
-2. Don't forget to use sctipt and styles files, there are comments, which i think you can handle =) 
+2. Include script.js and styles.css files in your project in wich you can find helpful comments.
 
-# End
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
