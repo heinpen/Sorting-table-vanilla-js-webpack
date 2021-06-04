@@ -19,7 +19,7 @@ Just simple, adaptive table.
 <div id="sort-table-container"></div>
 ```
 
-2. Include script.js and styles.css files in your project in wich you can find helpful comments.
+2. Include script.js file in your project in wich you can find helpful comments.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
