@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Just simple, adaptive table.  
+Simple, adaptive table.  
 [Firebase](https://firebase.google.com) was used as database.
 
 ## Features
